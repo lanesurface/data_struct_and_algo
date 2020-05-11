@@ -18,7 +18,17 @@ public:
   static stack<T>* make_resizable();
 };
 
+
 namespace intrnl_ds {
+
+template <typename T>
+struct linked_list {
+  T node;
+  linked_list *next;
+}; 
+
+template <typename T>
+using ll = linked_list<T>;
 
 template <typename T, std::size_t SIZE>
 class fixed_stack : public stack<T> {
@@ -50,6 +60,16 @@ private:
   T *elems;
   std::size_t n, max_cap;
 };
+
+template <typename T>
+class resizable_ll_stack : public stack<T> {
+public:
+
+private:
+  ll<T> *head; 
+  std::size_t n;
+};
+
 
 }
 // END NAMESPACE intrnl_ds
@@ -139,5 +159,44 @@ void intrnl_ds::resizable_stack<T>::resize(std::size_t cap) {
 
 }
 // END NAMESPACE intrnl_ds
+
+template <typename T>
+class queue { 
+public:
+  static queue<T>* make_queue() ;
+  ~queue() {
+    intrnl_ds::ll<T> *n = head;
+    if (!n) return;
+    else do {
+      auto *tmp = n->next;
+      delete n;
+      n = tmp; 
+    } while (n); 
+  }
+  void enqueue(T value) {
+    auto *node = new intrnl_ds::ll<T>{value,nullptr};
+    if (tail) tail->next = node;
+    else head = node;
+    tail = node;
+    n++;
+  }
+  T dequeue() {
+    intrnl_ds::ll<T> *tmp = head;
+    T val = tmp->val;
+    head = head->next;
+    delete tmp;
+    n--;
+    return val;
+  }
+private:
+  intrnl_ds::ll<T> *head,*tail;
+  std::size_t n;
+};
+
+// TEMPLATE CLASS queue
+template <typename T>
+static queue<T>* make_queue() {
+  return new queue<T>{};
+}
 
 #endif // __STACK_H_INCLUDED__

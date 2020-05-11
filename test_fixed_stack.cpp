@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include "stack.h"
+#include "intrnl_ds.h"
 
 int main() {
   constexpr int STACK_SZ = 5;

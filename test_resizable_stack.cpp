@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include "stack.h"
+#include "intrnl_ds.h"
 
 int main() {
   auto stk = stack<int>::make_resizable();
