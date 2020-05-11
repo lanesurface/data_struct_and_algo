@@ -164,30 +164,9 @@ template <typename T>
 class queue { 
 public:
   static queue<T>* make_queue() ;
-  ~queue() {
-    intrnl_ds::ll<T> *n = head;
-    if (!n) return;
-    else do {
-      auto *tmp = n->next;
-      delete n;
-      n = tmp; 
-    } while (n); 
-  }
-  void enqueue(T value) {
-    auto *node = new intrnl_ds::ll<T>{value,nullptr};
-    if (tail) tail->next = node;
-    else head = node;
-    tail = node;
-    n++;
-  }
-  T dequeue() {
-    intrnl_ds::ll<T> *tmp = head;
-    T val = tmp->val;
-    head = head->next;
-    delete tmp;
-    n--;
-    return val;
-  }
+  ~queue(); 
+  void enqueue(T value); 
+  T dequeue(); 
 private:
   intrnl_ds::ll<T> *head,*tail;
   std::size_t n;
@@ -195,8 +174,39 @@ private:
 
 // TEMPLATE CLASS queue
 template <typename T>
-static queue<T>* make_queue() {
+queue<T>* queue<T>::make_queue() {
   return new queue<T>{};
+}
+
+template <typename T>
+queue<T>::~queue() {
+  intrnl_ds::ll<T> *n = head;
+  if (!n) return;
+  else do {
+    auto *tmp = n->next;
+    delete n;
+    n = tmp; 
+  } while (n); 
+}
+
+template <typename T>
+void queue<T>::enqueue(T value) {
+  auto *node = new intrnl_ds::ll<T>{value,nullptr};
+  if (tail) tail->next = node;
+  else head = node;
+  tail = node;
+  n++;
+}
+
+
+template <typename T>
+T queue<T>::dequeue() {
+  intrnl_ds::ll<T> *tmp = head;
+  T val = tmp->value;
+  head = head->next;
+  delete tmp;
+  n--;
+  return val;
 }
 
 #endif // __STACK_H_INCLUDED__
